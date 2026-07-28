@@ -1,4 +1,17 @@
-# AGENTS.md — PHP Error Log Viewer
+# AGENTS.md
+
+## Development Workflow
+
+* Don't create test files such as bash scripts or php scripts in the main codebase.
+* **Auto-commit and push after every change.** After completing any code changes (fixes, features, refactors, etc.), automatically create a git commit with a descriptive message using conventional commit format (`feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, `chore:`). Do not wait for the user to ask — commit immediately after the changes are verified. Print the commit message when finishing the work.
+* **Commit after each PGF phase.** When executing a Plan Generation File (PGF), commit after completing each phase (including its validation) before moving to the next phase. This ensures incremental progress and easier debugging. Use `git add -A && git commit -m "feat: <phase description>" && git push` after phase validation passes.
+* Search `doc/` folder before creating new documentation files to avoid duplicates.
+* After completing code work, suggest testing methods for the change to complete.
+* Backend buttons, forms, and AJAX actions that trigger queue-backed work should queue the task immediately, kick off background processing, and return the task ID with a Task Queue link instead of blocking the request while the task completes.
+* Only explicit queue-runner controls, such as a dedicated "Process Queue Now" action or task queue testing control, should call `process_task()` or `process_queued_tasks()` directly in the request.
+* When adding new admin UI or AJAX task submissions, prefer `Faithmade_Task_Queue::submit_task()` over open-coded `create_task()` plus follow-up processing logic, unless the flow explicitly needs queue-only behavior.
+* Use `submit_task(..., true)` for new admin UI actions that should start immediately, and use `create_task()` only when the flow intentionally needs `Running/Queued` state until cron or another queue runner picks it up.
+
 
 ## Project Overview
 

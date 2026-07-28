@@ -1,0 +1,18 @@
+# Git
+.git/
+.gitignore
+
+# Tests & fixtures
+tests/
+
+# Example files
+examples/
+
+# Dev scripts & docs
+serve.sh
+BUILD.md
+AGENTS.md
+README.md
+
+# Docker files (prevent including compose file in image)
+docker-compose*

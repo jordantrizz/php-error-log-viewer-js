@@ -1,0 +1,23 @@
+# === PHP Error Log Viewer — Docker Compose ===
+#
+# Quick start:
+#   docker compose up
+#
+# Then open http://localhost:8080
+#
+# To use a custom port, set the HOST_PORT environment variable:
+#   HOST_PORT=3000 docker compose up
+
+services:
+  php-error-log-viewer:
+    build: .
+    container_name: php-error-log-viewer
+    ports:
+      - "${HOST_PORT:-8080}:80"
+    restart: unless-stopped
+
+    # Optional: Mount a directory of PHP error logs to browse via the browser.
+    # The files will be accessible but you'll need to serve them or use the
+    # "Upload" / "Paste" modes inside the app to load them.
+    # volumes:
+    #   - ./logs:/logs:ro

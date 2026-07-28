@@ -128,6 +128,29 @@ Deploy to any static host:
 
 No environment variables, no secrets, no server-side code.
 
+## Docker
+
+A `Dockerfile` and `docker-compose.yml.example` are included for containerized serving.
+
+```bash
+# Build and start with Docker Compose
+docker compose -f docker-compose.yml.example up --build
+
+# Or build and run manually
+docker build -t php-error-log-viewer .
+docker run -d -p 8080:80 php-error-log-viewer
+```
+
+Then open **http://localhost:8080**.
+
+To use a different host port:
+
+```bash
+HOST_PORT=3000 docker compose -f docker-compose.yml.example up
+```
+
+The image uses `nginx:alpine` (~5 MB base) and serves the static files with gzip compression enabled. No build step or dependencies required — just copy and serve, consistent with the project's zero-dependency philosophy.
+
 ## Development Workflow
 
 1. Edit files directly
