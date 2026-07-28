@@ -20,8 +20,8 @@ A **client-side only** JavaScript browser application that loads, parses, and vi
 ## Quick Start
 
 ```bash
-./serve.sh          # Starts on port 8080
-./serve.sh 3000     # Custom port
+./server.sh          # Starts on port 8080
+./server.sh 3000     # Custom port
 ```
 
 Then open **http://localhost:8080** in your browser.
@@ -65,7 +65,7 @@ php-error-log-viewer-js/
 │   └── utils.js            # Debounce, escape, fetch helpers
 ├── tests/
 │   └── fixtures/            # Sample PHP error logs
-├── serve.sh                # Dev server launcher
+├── server.sh                # Dev server launcher
 └── README.md
 ```
 

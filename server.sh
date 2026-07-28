@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# serve.sh — Start a local dev server for PHP Error Log Viewer
+# server.sh — Start a local dev server for PHP Error Log Viewer
 #
 # Usage:
-#   ./serve.sh          # Default port 8080
-#   ./serve.sh 3000     # Custom port
+#   ./server.sh          # Default port 8080
+#   ./server.sh 3000     # Custom port
 #
 # Requires Python 3 (preferred) or Python 2, or PHP, or npx as fallback.
 
