@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHP Error Log Viewer</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="app-header">
+    <div class="header-left">
+      <h1 class="app-title">PHP Error Log Viewer</h1>
+      <span class="app-subtitle">Client-side log analysis</span>
+    </div>
+    <div class="header-right">
+      <label for="timezone-select" class="timezone-label">Timezone</label>
+      <select id="timezone-select" class="timezone-select" aria-label="Select timezone for timestamps">
+        <option value="">Loading…</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ===== Main Content ===== -->
+  <main class="app-main">
+    <!-- Input Section -->
+    <section class="input-section" aria-labelledby="input-heading">
+      <h2 id="input-heading" class="section-heading">Load Error Log</h2>
+
+      <div class="tab-bar" role="tablist" aria-label="Input methods">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="upload" id="tab-upload">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 1L3 6h3v5h4V6h3L8 1zM2 12v2h12v-2H2z" fill="currentColor"/>
+          </svg>
+          Upload
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="paste" id="tab-paste">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="3" y="1" width="10" height="14" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M5 1h6v3H5V1z" fill="currentColor"/>
+          </svg>
+          Paste
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="url" id="tab-url">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <ellipse cx="8" cy="8" rx="2.5" ry="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M2 8h12" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          URL
+        </button>
+      </div>
+
+      <!-- Upload Panel -->
+      <div class="tab-panel active" role="tabpanel" data-panel="upload">
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="file-input" class="file-input" accept=".log,.txt,text/plain" aria-label="Choose a PHP error log file">
+          <div class="drop-zone-content">
+            <svg class="drop-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <path d="M24 6l-8 10h5v12h6V16h5L24 6zM10 32v6h28v-6H10z" fill="currentColor" opacity="0.4"/>
+              <rect x="8" y="32" width="32" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+            <p class="drop-text">Drag &amp; drop a log file here<br>or <span class="drop-link">browse to choose a file</span></p>
+            <p class="drop-hint">Supports <code>.log</code> and <code>.txt</code> files</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Paste Panel -->
+      <div class="tab-panel" role="tabpanel" data-panel="paste" hidden>
+        <textarea id="paste-textarea" class="paste-textarea" placeholder="Paste your PHP error log content here…" rows="12" aria-label="Paste log content"></textarea>
+        <p class="input-hint">Log content is parsed as you type. Nothing leaves your browser.</p>
+      </div>
+
+      <!-- URL Panel -->
+      <div class="tab-panel" role="tabpanel" data-panel="url" hidden>
+        <div class="url-input-row">
+          <input type="url" id="url-input" class="url-input" placeholder="https://example.com/error.log" aria-label="URL to error log file">
+          <button id="url-fetch-btn" class="btn btn-primary">Fetch Log</button>
+        </div>
+        <p id="url-status" class="input-hint" role="status"></p>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar" id="stats-bar" aria-live="polite">
+      <div class="stat">
+        <span class="stat-value" id="stat-total-errors">—</span>
+        <span class="stat-label">Total Errors</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-total-groups">—</span>
+        <span class="stat-label">Unique Groups</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="stat-time-range">—</span>
+        <span class="stat-label">Time Range</span>
+      </div>
+      <div class="stat-actions">
+        <button id="export-btn" class="btn btn-secondary" disabled>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2" y="2" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Copy CSV
+        </button>
+        <button id="clear-btn" class="btn btn-ghost" disabled>Clear All</button>
+      </div>
+    </section>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state">
+      <svg class="empty-icon" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+        <path d="M24 28h16M24 34h12M24 40h8" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+        <rect x="20" y="14" width="24" height="36" rx="3" stroke="currentColor" stroke-width="2" fill="none" opacity="0.4"/>
+      </svg>
+      <h3>No errors to display</h3>
+      <p>Upload, paste, or fetch a PHP error log to get started.</p>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-container" id="table-container" hidden>
+      <table class="results-table" id="results-table" aria-label="Grouped PHP error log entries">
+        <thead>
+          <tr>
+            <th class="col-count sortable" data-sort="count" scope="col" tabindex="0" role="columnheader" aria-sort="descending">
+              Count
+              <span class="sort-indicator" aria-hidden="true">▼</span>
+            </th>
+            <th class="col-time sortable" data-sort="time" scope="col" tabindex="0" role="columnheader">
+              Time
+              <span class="sort-indicator" aria-hidden="true"></span>
+            </th>
+            <th class="col-message sortable" data-sort="message" scope="col" tabindex="0" role="columnheader">
+              Message
+              <span class="sort-indicator" aria-hidden="true"></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="results-tbody">
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="app-footer">
+    <p>All parsing happens locally in your browser. No data is ever sent to a server.</p>
+    <p class="footer-meta">PHP Error Log Viewer &mdash; <span id="footer-stats">Ready</span></p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

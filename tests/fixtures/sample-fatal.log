@@ -1,0 +1,16 @@
+[27-Jul-2026 14:32:01 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysql_connect() in /var/www/html/app/config/database.php:42
+Stack trace:
+#0 /var/www/html/public/index.php(17): require_once()
+#1 {main}
+  thrown in /var/www/html/app/config/database.php on line 42
+
+[27-Jul-2026 14:32:15 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in /var/www/html/app/services/ReportGenerator.php on line 256
+
+[27-Jul-2026 14:33:00 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /var/www/html/app/config/database.php:42
+Stack trace:
+#0 /var/www/html/app/config/database.php(42): PDO->__construct()
+#1 /var/www/html/public/index.php(17): require_once()
+#2 {main}
+  thrown in /var/www/html/app/config/database.php on line 42
+
+[27-Jul-2026 14:45:22 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /var/www/html/app/services/DataImporter.php on line 89

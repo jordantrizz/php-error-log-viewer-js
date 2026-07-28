@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+
+# Examples / test data that shouldn't ship
+examples/*
+
+# Server artifacts
+__pycache__/
+*.pyc

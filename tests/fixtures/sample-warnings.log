@@ -1,0 +1,18 @@
+[27-Jul-2026 10:15:00 America/Chicago] PHP Warning:  include_once(vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/public/index.php on line 5
+[27-Jul-2026 10:15:00 America/Chicago] PHP Warning:  include_once(): Failed opening 'vendor/autoload.php' for inclusion in /var/www/html/public/index.php on line 5
+
+[27-Jul-2026 10:16:30 America/Chicago] PHP Warning:  Undefined array key "user_id" in /var/www/html/app/controllers/AuthController.php on line 73
+[27-Jul-2026 10:16:31 America/Chicago] PHP Warning:  Undefined array key "user_id" in /var/www/html/app/controllers/AuthController.php on line 73
+[27-Jul-2026 10:16:32 America/Chicago] PHP Warning:  Undefined array key "user_id" in /var/www/html/app/controllers/AuthController.php on line 73
+
+[27-Jul-2026 10:20:00 America/Chicago] PHP Warning:  Division by zero in /var/www/html/app/helpers/MathHelper.php on line 15
+
+[27-Jul-2026 10:22:45 America/Chicago] PHP Warning:  Trying to access array offset on value of type null in /var/www/html/app/models/User.php on line 112
+[27-Jul-2026 10:23:01 America/Chicago] PHP Warning:  Trying to access array offset on value of type null in /var/www/html/app/models/User.php on line 112
+
+[27-Jul-2026 10:30:00 America/Chicago] PHP Warning:  mkdir(): No such file or directory in /var/www/html/app/services/FileManager.php on line 44
+[27-Jul-2026 10:30:10 America/Chicago] PHP Warning:  mkdir(): No such file or directory in /var/www/html/app/services/FileManager.php on line 44
+[27-Jul-2026 10:30:20 America/Chicago] PHP Warning:  mkdir(): No such file or directory in /var/www/html/app/services/FileManager.php on line 44
+[27-Jul-2026 10:30:30 America/Chicago] PHP Warning:  mkdir(): No such file or directory in /var/www/html/app/services/FileManager.php on line 44
+
+[27-Jul-2026 10:35:00 America/Chicago] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/app/views/header.php:12) in /var/www/html/app/controllers/PageController.php on line 210

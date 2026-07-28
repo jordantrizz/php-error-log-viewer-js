@@ -1,0 +1,37 @@
+[27-Jul-2026 08:00:00 UTC] PHP Notice:  Undefined variable: title in /var/www/html/app/views/layout.php on line 23
+
+[27-Jul-2026 08:05:00 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/app/helpers/PaginationHelper.php on line 56
+[27-Jul-2026 08:05:05 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/app/helpers/PaginationHelper.php on line 56
+
+[27-Jul-2026 08:10:00 UTC] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/app/legacy/compat.php on line 18
+[27-Jul-2026 08:10:01 UTC] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/app/legacy/compat.php on line 18
+[27-Jul-2026 08:10:02 UTC] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/app/legacy/compat.php on line 18
+
+[27-Jul-2026 08:12:00 UTC] PHP Notice:  Trying to get property 'email' of non-object in /var/www/html/app/controllers/ProfileController.php on line 94
+[27-Jul-2026 08:12:10 UTC] PHP Notice:  Trying to get property 'email' of non-object in /var/www/html/app/controllers/ProfileController.php on line 94
+
+[27-Jul-2026 08:15:00 UTC] PHP Fatal error:  Uncaught TypeError: Argument 1 passed to App\Services\Mailer::send() must be an instance of App\Models\User, null given in /var/www/html/app/services/Mailer.php:34
+Stack trace:
+#0 /var/www/html/app/controllers/RegistrationController.php(56): App\Services\Mailer->send()
+#1 /var/www/html/public/index.php(22): require()
+#2 {main}
+  thrown in /var/www/html/app/services/Mailer.php on line 34
+
+[27-Jul-2026 08:20:00 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Legacy_Importer has a deprecated constructor in /var/www/html/app/legacy/Legacy_Importer.php on line 12
+[27-Jul-2026 08:20:01 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Legacy_Importer has a deprecated constructor in /var/www/html/app/legacy/Legacy_Importer.php on line 12
+
+[27-Jul-2026 08:25:00 UTC] PHP Notice:  Undefined index: HTTP_HOST in /var/www/html/app/config/env.php on line 8
+
+[27-Jul-2026 08:30:00 UTC] PHP Warning:  file_get_contents(https://api.example.com/data): Failed to open stream: HTTP request failed! HTTP/1.1 500 Internal Server Error in /var/www/html/app/services/ApiClient.php on line 78
+
+[27-Jul-2026 08:35:00 UTC] PHP Fatal error:  Uncaught Error: Class "App\Services\RedisLogger" not found in /var/www/html/app/config/services.php:27
+Stack trace:
+#0 /var/www/html/public/index.php(10): require()
+#1 {main}
+  thrown in /var/www/html/app/config/services.php on line 27
+
+[27-Jul-2026 08:40:00 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ';' in /var/www/html/app/controllers/NewController.php on line 142
+
+[27-Jul-2026 08:45:00 UTC] PHP Notice:  A non well formed numeric value encountered in /var/www/html/app/helpers/Formatter.php on line 33
+
+[27-Jul-2026 08:50:00 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes) in /var/www/html/app/services/ReportGenerator.php on line 256
