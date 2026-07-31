@@ -49,6 +49,12 @@
           </svg>
           URL
         </button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="example" id="tab-example">
+          <svg class="tab-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 2l1.5 4.5L14 8l-4.5 1.5L8 14l-1.5-4.5L2 8l4.5-1.5L8 2z" fill="currentColor"/>
+          </svg>
+          Example
+        </button>
       </div>
 
       <!-- Upload Panel -->
@@ -94,6 +100,19 @@
             <li>If you control the server, add the CORS header above to its response</li>
           </ul>
         </details>
+      </div>
+
+      <!-- Example Panel -->
+      <div class="tab-panel" role="tabpanel" data-panel="example" hidden>
+        <div class="example-panel">
+          <p class="example-desc">
+            Load a built-in sample PHP error log: <strong>500 lines</strong> of realistic
+            WordPress/PHP errors with intentional duplicates, so you can see the similarity
+            grouping in action. No file needed — the data is bundled with the app.
+          </p>
+          <button id="example-load-btn" class="btn btn-primary">Load Example Log</button>
+          <p id="example-status" class="input-hint" role="status"></p>
+        </div>
       </div>
     </section>
 
@@ -162,7 +181,7 @@
   <!-- ===== Footer ===== -->
   <footer class="app-footer">
     <p>All parsing happens locally in your browser. No data is ever sent to a server.</p>
-    <p class="footer-meta">PHP Error Log Viewer &mdash; <span id="footer-stats">Ready</span> &middot; <span id="footer-version">v0.0.4</span></p>
+    <p class="footer-meta">PHP Error Log Viewer &mdash; <span id="footer-stats">Ready</span> &middot; <span id="footer-version">v0.0.5</span></p>
   </footer>
 
   <!-- Scripts -->

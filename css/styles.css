@@ -257,6 +257,21 @@ body {
   display: none;
 }
 
+/* ----- Example Panel ----- */
+.example-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  max-width: 520px;
+}
+
+.example-desc {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }

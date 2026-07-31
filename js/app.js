@@ -12,6 +12,7 @@ import { groupErrors } from './grouper.js';
 import { renderGroups, showEmptyState, setSort, toggleExpand, exportCSV, updateStats } from './ui.js';
 import { buildTimezoneSelect, getSavedTimezone, saveTimezone } from './timezone.js';
 import { debounce, readFileAsText, downloadAsFile } from './utils.js';
+import { EXAMPLE_LOG, EXAMPLE_LOG_LINES } from './example-data.js';
 
 // ---------------------------------------------------------------------------
 // Module state
@@ -59,6 +60,12 @@ const tbody = () => document.getElementById('results-tbody');
 
 /** @returns {HTMLElement} */
 const dropZone = () => document.getElementById('drop-zone');
+
+/** @returns {HTMLButtonElement} */
+const exampleLoadBtn = () => document.getElementById('example-load-btn');
+
+/** @returns {HTMLElement} */
+const exampleStatus = () => document.getElementById('example-status');
 
 // ---------------------------------------------------------------------------
 // Data pipeline
@@ -275,12 +282,35 @@ function setupUrlFetch() {
 }
 
 // ---------------------------------------------------------------------------
+// Input Mode 4: Built-in Example
+// ---------------------------------------------------------------------------
+
+/**
+ * Load the bundled 500-line sample log through the normal pipeline.
+ */
+function loadExample() {
+  processLog(EXAMPLE_LOG, 'example');
+  const status = exampleStatus();
+  status.textContent = `Loaded ${EXAMPLE_LOG_LINES} lines of sample data — see the stats above.`;
+  status.className = 'input-hint success';
+}
+
+function setupExamplePanel() {
+  exampleLoadBtn().addEventListener('click', loadExample);
+}
+
+// ---------------------------------------------------------------------------
 // Tab Switching
 // ---------------------------------------------------------------------------
 
 function setupTabs() {
   const tabBar = document.querySelector('.tab-bar');
   if (!tabBar) return;
+
+  // Side-effects to run when a specific tab is activated
+  const tabActions = {
+    example: loadExample,
+  };
 
   tabBar.addEventListener('click', (e) => {
     const btn = /** @type {HTMLElement} */ (e.target).closest('[data-tab]');
@@ -304,6 +334,10 @@ function setupTabs() {
         panel.setAttribute('hidden', '');
       }
     }
+
+    // Run any tab-specific side-effect (e.g. load example data)
+    const action = tabActions[tabName];
+    if (action) action();
   });
 
   // Keyboard navigation for tabs
@@ -440,6 +474,11 @@ function setupActions() {
     status.textContent = '';
     status.className = 'input-hint';
 
+    // Reset example panel status
+    const exStatus = exampleStatus();
+    exStatus.textContent = '';
+    exStatus.className = 'input-hint';
+
     // Reset progress elements
     const progress = document.getElementById('url-progress');
     const progressBar = document.getElementById('url-progress-bar');
@@ -465,12 +504,13 @@ function setupActions() {
 
 function setupKeyboardShortcuts() {
   document.addEventListener('keydown', (e) => {
-    // Ctrl+Shift+1/2/3 to switch tabs
+    // Ctrl+Shift+1/2/3/4 to switch tabs
     if (e.ctrlKey && e.shiftKey) {
       const tabBtns = document.querySelectorAll('[data-tab]');
       if (e.key === '1' && tabBtns[0]) tabBtns[0].click();
       if (e.key === '2' && tabBtns[1]) tabBtns[1].click();
       if (e.key === '3' && tabBtns[2]) tabBtns[2].click();
+      if (e.key === '4' && tabBtns[3]) tabBtns[3].click();
     }
   });
 }
@@ -490,6 +530,7 @@ function init() {
   setupFileUpload();
   setupPaste();
   setupUrlFetch();
+  setupExamplePanel();
   setupSorting();
   setupRowClicks();
   setupActions();
