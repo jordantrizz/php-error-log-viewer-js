@@ -11,7 +11,7 @@ import { parseLog } from './parser.js';
 import { groupErrors } from './grouper.js';
 import { renderGroups, showEmptyState, setSort, toggleExpand, exportCSV, updateStats } from './ui.js';
 import { buildTimezoneSelect, getSavedTimezone, saveTimezone } from './timezone.js';
-import { debounce, readFileAsText, fetchLogUrl } from './utils.js';
+import { debounce, readFileAsText, downloadAsFile } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Module state
@@ -170,6 +170,23 @@ function setupUrlFetch() {
   const btn = urlFetchBtn();
   const input = urlInput();
   const status = urlStatus();
+  const progress = document.getElementById('url-progress');
+  const progressBar = document.getElementById('url-progress-bar');
+
+  /**
+   * Reset the URL status UI to idle state.
+   */
+  function resetStatus() {
+    status.textContent = '';
+    status.className = 'input-hint';
+    if (progress) {
+      progress.hidden = true;
+      progress.removeAttribute('value');
+    }
+    if (progressBar) {
+      progressBar.style.width = '0%';
+    }
+  }
 
   btn.addEventListener('click', async () => {
     const url = input.value.trim();
@@ -185,21 +202,58 @@ function setupUrlFetch() {
     }
     fetchAbortController = new AbortController();
 
-    // Show loading state
+    // Show download-in-progress UI
     btn.disabled = true;
     btn.classList.add('loading');
-    status.textContent = 'Fetching…';
+    status.textContent = 'Connecting…';
     status.className = 'input-hint loading';
+    if (progress) {
+      progress.hidden = false;
+      progress.value = 0;
+    }
+    if (progressBar) {
+      progressBar.style.width = '0%';
+    }
 
     try {
-      const text = await fetchLogUrl(url, fetchAbortController.signal);
+      // Phase 1: Download the URL as a local File (with progress)
+      const file = await downloadAsFile(url, fetchAbortController.signal, (p) => {
+        if (p.percent !== null) {
+          status.textContent = `Downloading… ${p.percent}%`;
+          if (progress) {
+            progress.hidden = false;
+            progress.value = p.percent;
+          }
+        } else {
+          const loadedKB = (p.loaded / 1024).toFixed(0);
+          status.textContent = `Downloading… ${loadedKB} KB`;
+        }
+        if (progressBar) {
+          progressBar.style.width = (p.percent ?? 50) + '%';
+        }
+      });
+
+      // Phase 2: Read the downloaded file locally (same path as file upload)
+      const text = await readFileAsText(file);
       processLog(text, `URL "${url}"`);
-      status.textContent = `Loaded ${(text.length / 1024).toFixed(1)} KB successfully.`;
+      status.textContent = `Loaded ${(text.length / 1024).toFixed(1)} KB from "${file.name}" successfully.`;
       status.className = 'input-hint success';
+      if (progress) {
+        progress.hidden = true;
+      }
+      if (progressBar) {
+        progressBar.style.width = '100%';
+      }
     } catch (err) {
+      resetStatus();
       if (err.name === 'AbortError') {
         status.textContent = 'Fetch cancelled.';
         status.className = 'input-hint';
+      } else if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+        // CORS or network error — fetch() gives very little detail, but this
+        // is almost always a CORS block when the URL is otherwise reachable.
+        status.textContent = 'Blocked by CORS policy. The remote server does not permit cross-origin requests. See the notice above for workarounds.';
+        status.className = 'input-hint error';
       } else {
         status.textContent = `Error: ${err.message}`;
         status.className = 'input-hint error';
@@ -385,6 +439,17 @@ function setupActions() {
     const status = urlStatus();
     status.textContent = '';
     status.className = 'input-hint';
+
+    // Reset progress elements
+    const progress = document.getElementById('url-progress');
+    const progressBar = document.getElementById('url-progress-bar');
+    if (progress) {
+      progress.hidden = true;
+      progress.removeAttribute('value');
+    }
+    if (progressBar) {
+      progressBar.style.width = '0%';
+    }
 
     // Abort any in-flight fetch
     if (fetchAbortController) {

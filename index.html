@@ -78,7 +78,22 @@
           <input type="url" id="url-input" class="url-input" placeholder="https://example.com/error.log" aria-label="URL to error log file">
           <button id="url-fetch-btn" class="btn btn-primary">Fetch Log</button>
         </div>
+        <div class="url-progress-wrapper" hidden id="url-progress-wrapper">
+          <div class="url-progress-bar" id="url-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+        </div>
+        <progress id="url-progress" class="url-progress" value="0" max="100" hidden aria-label="Download progress"></progress>
         <p id="url-status" class="input-hint" role="status"></p>
+        <details class="url-cors-notice">
+          <summary>⚠️ CORS may block remote URLs</summary>
+          <p>Browsers block cross-origin HTTP requests unless the remote server sends this header:</p>
+          <code>Access-Control-Allow-Origin: *</code>
+          <p>If the fetch fails with a CORS error, try one of these workarounds:</p>
+          <ul>
+            <li><strong>Download the file</strong> to your machine and use the <em>Upload</em> tab instead</li>
+            <li><strong>Copy &amp; paste</strong> the log content into the <em>Paste</em> tab</li>
+            <li>If you control the server, add the CORS header above to its response</li>
+          </ul>
+        </details>
       </div>
     </section>
 
@@ -147,7 +162,7 @@
   <!-- ===== Footer ===== -->
   <footer class="app-footer">
     <p>All parsing happens locally in your browser. No data is ever sent to a server.</p>
-    <p class="footer-meta">PHP Error Log Viewer &mdash; <span id="footer-stats">Ready</span></p>
+    <p class="footer-meta">PHP Error Log Viewer &mdash; <span id="footer-stats">Ready</span> &middot; <span id="footer-version">v0.0.4</span></p>
   </footer>
 
   <!-- Scripts -->
